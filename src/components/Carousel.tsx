@@ -9,6 +9,8 @@ const Carousel = ({ images }: CarouselProps) => {
   const [isTransitioning, setIsTransitioning] = useState<boolean>(true) // Gestion de la transition
   const transitionRef = useRef<HTMLDivElement>(null)
 
+  const transitionRefCurrent = transitionRef.current
+
   const totalSlides = images.length
 
   const nextImage = () => { // Fonction pour passer à l'image suivante
@@ -22,7 +24,7 @@ const Carousel = ({ images }: CarouselProps) => {
   }
 
   useEffect(() => {
-    const transitionDuration = 500 // Durée de la transition en ms
+    // const transitionDuration = 500 // Durée de la transition en ms
 
     const handleTransitionEnd = () => {
       if (currentIndex === totalSlides + 1) { // Si nous sommes au clone de la première image, repositionner sur la vraie première image
@@ -35,11 +37,11 @@ const Carousel = ({ images }: CarouselProps) => {
     }
 
     if (isTransitioning) { // Réactiver la transition
-      transitionRef.current?.addEventListener('transitionend', handleTransitionEnd)
+      transitionRefCurrent?.addEventListener('transitionend', handleTransitionEnd)
     }
 
     return () => {
-      transitionRef.current?.removeEventListener('transitionend', handleTransitionEnd)
+      transitionRefCurrent?.removeEventListener('transitionend', handleTransitionEnd)
     }
   }, [currentIndex, isTransitioning, totalSlides])
 
